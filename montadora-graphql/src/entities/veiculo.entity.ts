@@ -8,9 +8,6 @@ export class Veiculo extends BaseEntity{
     id: number;
 
     @Column()
-    nome:string
-
-    @Column()
     cor:string;
 
     @Column()

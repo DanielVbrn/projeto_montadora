@@ -7,7 +7,6 @@ type Montadora {
 
 type Veiculo {
   id: ID!
-  nome: String
   cor: String
   modelo: String
   montadora: Montadora!
@@ -22,9 +21,8 @@ type Query {
 type Mutation {
   cadastrarMontadora(nome:String): Montadora!
   cadastrarVeiculo(cor:String, modelo:String, montadoraId:ID!): Veiculo!
+
+  removerMontadora(nome:String!): Montadora!
+  removerVeiculo(modelo:String, montadoraId:ID!): Veiculo!
 }
 
-type Mutation {
-  removerMontadora(nome:String): Montadora!
-  removerVeiculo(nome:String, montadoraId:ID!): Veiculo!
-}
