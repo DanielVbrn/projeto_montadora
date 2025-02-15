@@ -20,21 +20,34 @@ const AddMontadoraPage = ()=>{
     _s();
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"])();
     const onSubmit = async (data)=>{
+        const mutation = `
+          mutation {
+            cadastrarMontadora(nome: "${data.nome}", pais: "${data.pais}", ano_fundacao: ${Number(data.ano_fundacao)}) {
+              nome
+              pais
+              ano_fundacao
+            }
+          }
+        `;
         try {
             const response = await fetch('http://localhost:4000/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    query: mutation
+                })
             });
-            if (!response.ok) {
-                throw new Error('Erro ao cadastrar montadora');
+            const responseData = await response.json();
+            if (!response.ok || responseData.errors) {
+                console.error("Erro na resposta:", responseData);
+                throw new Error(responseData.errors?.[0]?.message || 'Erro ao cadastrar montadora');
             }
             alert('Montadora cadastrada com sucesso!');
         } catch (error) {
             console.error('Erro:', error);
-            alert('Erro ao cadastrar montadora');
+            alert(error.message);
         }
     };
     if (isSubmitSuccessful) {
@@ -50,7 +63,7 @@ const AddMontadoraPage = ()=>{
                     children: "Cadastrar Montadora"
                 }, void 0, false, {
                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                    lineNumber: 43,
+                    lineNumber: 59,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -65,7 +78,7 @@ const AddMontadoraPage = ()=>{
                                     children: "Nome"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 46,
+                                    lineNumber: 62,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -76,7 +89,7 @@ const AddMontadoraPage = ()=>{
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 47,
+                                    lineNumber: 63,
                                     columnNumber: 17
                                 }, this),
                                 errors.nome && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -84,13 +97,13 @@ const AddMontadoraPage = ()=>{
                                     children: errors.nome.message
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 52,
+                                    lineNumber: 68,
                                     columnNumber: 33
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/montadoras/add/page.tsx",
-                            lineNumber: 45,
+                            lineNumber: 61,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -101,7 +114,7 @@ const AddMontadoraPage = ()=>{
                                     children: "País"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 55,
+                                    lineNumber: 71,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -112,7 +125,7 @@ const AddMontadoraPage = ()=>{
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 56,
+                                    lineNumber: 72,
                                     columnNumber: 17
                                 }, this),
                                 errors.pais && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -120,13 +133,13 @@ const AddMontadoraPage = ()=>{
                                     children: errors.pais.message
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 61,
+                                    lineNumber: 77,
                                     columnNumber: 33
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/montadoras/add/page.tsx",
-                            lineNumber: 54,
+                            lineNumber: 70,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -137,7 +150,7 @@ const AddMontadoraPage = ()=>{
                                     children: "Ano de Fundação"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 64,
+                                    lineNumber: 80,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -157,7 +170,7 @@ const AddMontadoraPage = ()=>{
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 65,
+                                    lineNumber: 81,
                                     columnNumber: 17
                                 }, this),
                                 errors.ano_fundacao && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -165,13 +178,13 @@ const AddMontadoraPage = ()=>{
                                     children: errors.ano_fundacao.message
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                                    lineNumber: 75,
+                                    lineNumber: 91,
                                     columnNumber: 41
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/montadoras/add/page.tsx",
-                            lineNumber: 63,
+                            lineNumber: 79,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -180,24 +193,24 @@ const AddMontadoraPage = ()=>{
                             children: "Cadastrar"
                         }, void 0, false, {
                             fileName: "[project]/src/app/montadoras/add/page.tsx",
-                            lineNumber: 77,
+                            lineNumber: 93,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/montadoras/add/page.tsx",
-                    lineNumber: 44,
+                    lineNumber: 60,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/montadoras/add/page.tsx",
-            lineNumber: 42,
+            lineNumber: 58,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/montadoras/add/page.tsx",
-        lineNumber: 41,
+        lineNumber: 57,
         columnNumber: 9
     }, this);
 };

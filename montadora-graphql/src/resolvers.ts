@@ -1,7 +1,7 @@
 import { AppDataSource } from "../data-source";
 import { MyGQLContext } from "./context-graphql";
 import { Montadora } from "./entities/montadora.entity";
-import { Veiculo } from "./entities/veiculo.entity";
+import { Modelo } from "./entities/modelo.entity";
 
 export const resolvers = {
   Query: {
@@ -10,19 +10,19 @@ export const resolvers = {
     montadoras: async (_parent: any, _args: any, context: MyGQLContext, _info: any) => {
       console.log(`User: ${context.user}`)
 
-      return await AppDataSource.getRepository(Montadora).find({ relations: ["veiculos"] });
+      return await AppDataSource.getRepository(Montadora).find({ relations: ["modelos"] });
     },
-    veiculos: async (_parent: any, _args: any, context: MyGQLContext, _info: any) => {
+    modelos: async (_parent: any, _args: any, context: MyGQLContext, _info: any) => {
       console.log(`User: ${context.user}`)
 
-      return await AppDataSource.getRepository(Veiculo).find({ relations: ["montadora"] }); 
+      return await AppDataSource.getRepository(Modelo).find({ relations: ["montadora"] }); 
     },
   },
 
   Mutation: {
-    cadastrarMontadora: async (_:any, {nome}: {nome:string}  ) => {
+    cadastrarMontadora: async (_:any, {nome, pais, ano_fundacao}: {nome:string, pais:string, ano_fundacao:number}  ) => {
       const montadora = AppDataSource.getRepository(Montadora);
-      const novaMontadora = montadora.create({nome});
+      const novaMontadora = montadora.create({nome, pais, ano_fundacao});
       return await montadora.save(novaMontadora);
     },
 
@@ -38,8 +38,8 @@ export const resolvers = {
       return nameMontadora;
     },
 
-    cadastrarVeiculo: async (_:any, {cor, modelo, montadoraId}: {cor:string, modelo:string, montadoraId:number}  ) => {
-      const veiculoRepository = AppDataSource.getRepository(Veiculo);
+    cadastrarModelo: async (_:any, {nome, cor, modelo, montadoraId}: {nome: string, cor:string, modelo:string,  montadoraId:number}  ) => {
+      const modeloRepository = AppDataSource.getRepository(Modelo);
       const montadoraRepository = AppDataSource.getRepository(Montadora)
 
       const montadora = await montadoraRepository.findOneBy({id:montadoraId})
@@ -48,8 +48,8 @@ export const resolvers = {
         throw new Error("Nenhuma montadora não encontrada.");
       }
 
-      const novoVeiculo = veiculoRepository.create({cor, modelo, montadora});
-      return veiculoRepository.save(novoVeiculo);
+      const novoModelo = modeloRepository.create({nome, cor, modelo, montadora});
+      return modeloRepository.save(novoModelo);
     },
   }
 

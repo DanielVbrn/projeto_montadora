@@ -15,7 +15,7 @@ interface Modelo {
 const ModelosPage = async ({params}: ModeloProps) => {
     const {id} = await params;
 
-    const response = await fetch(`http://localhost:8000/api/montadoras/${id}/modelos`)
+    const response = await fetch(`http://localhost:4000/graphql/montadoras/${id}/modelos`)
     const modelos = await response.json() as Modelo[];
     const montadora = modelos[0].montadora;
 

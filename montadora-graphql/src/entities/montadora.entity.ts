@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Veiculo } from "./veiculo.entity";
+import { Modelo } from "./modelo.entity";
 
 @Entity()
 export class Montadora extends BaseEntity{
@@ -10,8 +10,14 @@ export class Montadora extends BaseEntity{
     @Column({unique:true})
     nome: String;
 
-    @OneToMany(() => Veiculo, (veiculo) => veiculo.montadora)
-    veiculo:Veiculo;
+    @Column()
+    pais: String;
+
+    @Column()
+    ano_fundacao: number;
+
+    @OneToMany(() => Modelo, (modelo) => modelo.montadora)
+    modelos:Modelo[];
 
 }
 

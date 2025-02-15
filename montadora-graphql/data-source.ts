@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Montadora } from "./src/entities/montadora.entity";
 import dotenv from "dotenv"
-import { Veiculo } from "./src/entities/veiculo.entity";
+import { Modelo } from "./src/entities/modelo.entity";
 
 dotenv.config()
 
@@ -22,8 +22,8 @@ export const AppDataSource = new DataSource({
 
   synchronize: false,
   logging: true,
-  entities: [Montadora, Veiculo], 
-  migrations: ["src/persistence/typeorm/migrations/**/*.ts"],
+  entities: [Montadora, Modelo], 
+  migrations: ["src/persistence/typeorm/migrations/*.ts"],
 });
 
 AppDataSource.initialize()

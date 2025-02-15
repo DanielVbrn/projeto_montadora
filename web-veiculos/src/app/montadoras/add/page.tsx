@@ -10,28 +10,44 @@ interface MontadoraFormData {
 }
 
 const AddMontadoraPage: React.FC = () => {
-    
+
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful } } = useForm<MontadoraFormData>();
 
     const onSubmit = async (data: MontadoraFormData) => {
+        const mutation = `
+          mutation {
+            cadastrarMontadora(nome: "${data.nome}", pais: "${data.pais}", ano_fundacao: ${Number(data.ano_fundacao)}) {
+              nome
+              pais
+              ano_fundacao
+            }
+          }
+        `;
+        
         try {
             const response = await fetch('http://localhost:4000/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data),
+                body: 
+                JSON.stringify({query: mutation}),
             });
-
-            if (!response.ok) {
-                throw new Error('Erro ao cadastrar montadora');
+    
+            const responseData = await response.json();
+            
+            if (!response.ok || responseData.errors) {
+                console.error("Erro na resposta:", responseData);
+                throw new Error(responseData.errors?.[0]?.message || 'Erro ao cadastrar montadora');
             }
+    
             alert('Montadora cadastrada com sucesso!');
-        } catch (error) {
+        } catch (error: any) {
             console.error('Erro:', error);
-            alert('Erro ao cadastrar montadora');
+            alert(error.message);
         }
     };
+    
 
     if (isSubmitSuccessful) {
         redirect('/montadoras');

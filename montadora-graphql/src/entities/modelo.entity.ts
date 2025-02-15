@@ -2,10 +2,13 @@ import { BaseEntity, Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn
 import { Montadora } from "./montadora.entity";
 
 @Entity()
-export class Veiculo extends BaseEntity{
+export class Modelo extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column()
+    nome:string;
 
     @Column()
     cor:string;
@@ -13,7 +16,7 @@ export class Veiculo extends BaseEntity{
     @Column()
     modelo:string;
 
-    @ManyToOne(() => Montadora, (montadora) => montadora.veiculo)
+    @ManyToOne(() => Montadora, (montadora) => montadora.modelos)
     montadora:Montadora;
 }
 
